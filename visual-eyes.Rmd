@@ -112,3 +112,13 @@ peppers_complete
 
 ### Mental Representation with physical practice = most improvement
 Works in sports. Does it work in programming? For me, sometimes.
+
+### Route reading in rstats
+
+- Look at data with your eyes
+- Mentally represent the end state of the data
+- Consider possible transformations
+- Allow memories of functions and arguments used in the past
+- Sequence your moves, what unlocks what
+- Iterate and practice
+- Review
