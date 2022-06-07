@@ -1,0 +1,114 @@
+---
+title: "Visual-Eyes: route reading in rstats"
+author: "Jeremy Allen"
+date: '2022-06-06'
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+library(tidyverse)
+
+```
+
+This fake data matches real-world data I was given. This data in its current state is the rock wall I need to climb.
+
+## Route-reading the data  
+
+```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
+
+peppers <- tibble(
+  unit_id = c("000000001", "000000002", "000000003"),
+  date = c("2021-01-01", "2021-01-02", "2021-01-01"),
+  description = c("subunit 1 is great and subunit 2 is cool", "subunit 1 is awesome and subunit 2 is amazing", "subunit 1 is bad and subunit 2 is gross and subunit 3 is rotten"),
+  su1_weight = c(100, 50, 150),
+  su1_length = c(5, 2, 7),
+  su2_weight = c(200, 150, 300),
+  su2_length = c(12, 7, 24)
+)
+
+peppers
+
+```
+
+Read my main route and think about the problems to be overcome.  
+
+```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
+
+peppers %>% 
+  select(unit_id, description)
+
+```
+
+```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
+
+names(peppers)
+
+```
+
+### Considering possible moves
+
+Like Adam in the climbing video, I'll draw the route and a few moves I may need to make in order to make the climb
+
+- The level of analysis is the units of peppers (rows)
+- We see units in the id column and subunits mentioned in the description column
+- I need subunits to be the level of analysis with one subunit per row, i.e., tidy
+- Also noticing the description column is not named like the other subunit columns
+- wait, what, each description does not contain the same number of subunits
+- flash! this data matches the example described on the `pivot_longer` help page as "Multiple observations per row"  
+(back to slides)
+
+### Sequencing the moves, one unlocks the next
+
+The description column can be separated into new columns, and if we make names of the new columns match the format of the other subunit column names we can take advantage of a certain `pivot_longer` argument.  
+
+```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
+
+peppers_sep <- peppers %>%
+  separate(
+    description,
+    into = c("su1_description", "su2_description", "su3_description"),
+    sep = "\\sand\\s"
+  )
+
+peppers_sep
+
+```
+
+All feature columns now match the pattern `id_feature`, so I can take advantage of that in `pivot_longer()` 
+
+- split subunit from value
+- using a pattern match
+
+```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
+
+peppers_long <- peppers_sep %>%
+  pivot_longer(
+    cols = starts_with("su"), # now we can do because all subunit cols start this way now
+    names_to = c("subunit", ".value"), # the special argument with .value!
+    names_pattern = "(su\\d)_(\\w+)" # regex that matches existing col names
+  )
+
+peppers_long
+
+```
+
+(back to slides)
+
+### How it's going, tidy!
+
+Because unit 000000003 had three subunits while the others only two, we get description rows with NA. So we drop those rows.
+
+```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
+
+peppers_complete <- peppers_long %>%
+  filter(!is.na(description))
+
+peppers_complete
+
+```
+
+### Mental Representation with physical practice = most improvement
+Works in sports. Does it work in programming? For me, sometimes.
