@@ -15,7 +15,7 @@ library(tidyverse)
 
 This fake data matches real-world data I was given. This data in its current state is the rock wall I need to climb.
 
-## Route-reading the data  
+## Route-reading the data
 
 ```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
 
@@ -33,7 +33,7 @@ peppers
 
 ```
 
-Read my main route and think about the problems to be overcome.  
+Read my main route and think about the problems to be overcome.
 
 ```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
 
@@ -52,17 +52,17 @@ names(peppers)
 
 Like Adam in the climbing video, I'll draw the route and a few moves I may need to make in order to make the climb
 
-- The level of analysis is the units of peppers (rows)
-- We see units in the id column and subunits mentioned in the description column
-- I need subunits to be the level of analysis with one subunit per row, i.e., tidy
-- Also noticing the description column is not named like the other subunit columns
-- wait, what, each description does not contain the same number of subunits
-- flash! this data matches the example described on the `pivot_longer` help page as "Multiple observations per row"  
-(back to slides)
+-   The level of analysis is the units of peppers (rows)
+-   We see units in the id column and subunits mentioned in the description column
+-   I need subunits to be the level of analysis with one subunit per row, i.e., tidy
+-   Also noticing the description column is not named like the other subunit columns
+-   wait, what, each description does not contain the same number of subunits
+-   flash! this data matches the example described on the `pivot_longer` help page as "Multiple observations per row"\
+    (back to slides)
 
 ### Sequencing the moves, one unlocks the next
 
-The description column can be separated into new columns, and if we make names of the new columns match the format of the other subunit column names we can take advantage of a certain `pivot_longer` argument.  
+The description column can be separated into new columns, and if we make names of the new columns match the format of the other subunit column names we can take advantage of a certain `pivot_longer` argument.
 
 ```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
 
@@ -77,10 +77,10 @@ peppers_sep
 
 ```
 
-All feature columns now match the pattern `id_feature`, so I can take advantage of that in `pivot_longer()` 
+All feature columns now match the pattern `id_feature`, so I can take advantage of that in `pivot_longer()`
 
-- split subunit from value
-- using a pattern match
+-   split subunit from value
+-   using a pattern match
 
 ```{r echo=TRUE, warning=FALSE, paged.print=FALSE}
 
@@ -111,14 +111,15 @@ peppers_complete
 ```
 
 ### Mental Representation with physical practice = most improvement
+
 Works in sports. Does it work in programming? For me, sometimes.
 
 ### Route reading in rstats
 
-- Look at data with your eyes
-- Mentally represent the end state of the data
-- Consider possible transformations
-- Allow memories of functions and arguments used in the past
-- Sequence your moves, what unlocks what
-- Iterate and practice
-- Review
+-   Look at data with your eyes
+-   Mentally represent the end state of the data
+-   Consider possible transformations
+-   Allow memories of functions and arguments used in the past
+-   Sequence your moves, what unlocks what
+-   Iterate and practice
+-   Review
